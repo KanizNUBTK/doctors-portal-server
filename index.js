@@ -12,6 +12,8 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 //firebase sdk file server
 const serviceAccount = require('./doctors-portal-firebase-adminsdk.json');
+//const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+console.log(serviceAccount);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -115,6 +117,7 @@ async function run() {
       //admin update
       app.put('/users/admin',verifyToken, async(req,res)=>{
         const user = req.body;
+        console.log('put', req.headers.authorization);
         const requester = req.decodedEmail;
         if(requester){
           const requesterAccount = await usersCollection.findOne({email: requester});
